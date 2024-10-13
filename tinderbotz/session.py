@@ -1,13 +1,16 @@
 # Selenium: automation of browser
 from selenium import webdriver
-# from webdriver_manager.chrome import ChromeDriverManager
-import undetected_chromedriver.v2 as uc
+from webdriver_manager.chrome import ChromeDriverManager
+import undetected_chromedriver as uc
 from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException, TimeoutException, ElementNotVisibleException
 from selenium.webdriver.common.by import By
-
+import os
+import certifi
+os.environ['SSL_CERT_FILE'] = certifi.where()
 
 # some other imports :-)
 import os
@@ -71,12 +74,13 @@ class Session:
                 print("Ended session: {}".format(y))
             
             # Close browser properly
-            self.browser.quit()
+            #self.browser.quit()
 
         # Go further with the initialisation
         # Setting some options of the browser here below
 
-        options = uc.ChromeOptions()
+        service = Service(ChromeDriverManager().install())
+        options = webdriver.ChromeOptions()
 
         # Create empty profile to avoid annoying Mac Popup
         if store_session:
@@ -112,8 +116,9 @@ class Session:
 
         # Getting the chromedriver from cache or download it from internet
         print("Getting ChromeDriver ...")
-        self.browser = uc.Chrome(options=options)  # ChromeDriverManager().install(),
-        # self.browser = webdriver.Chrome(options=options)
+        # self.browser = uc.Chrome(options=options)  # ChromeDriverManager().install(),
+        
+        self.browser = webdriver.Chrome(service=service, options=options)
         # self.browser.set_window_size(1250, 750)
 
         # clear the console based on the operating system you're using

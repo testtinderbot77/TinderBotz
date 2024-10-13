@@ -8,7 +8,7 @@ import time
 
 class LoginHelper:
 
-    delay = 7
+    delay = 60
 
     def __init__(self, browser):
         self.browser = browser
